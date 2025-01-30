@@ -1,5 +1,7 @@
 import React from "react";
 import { useAuth } from "./use-auth-client";
+import CertificateForm from "./CertificateForm";
+import { useNavigate } from "react-router-dom";
 
 const whoamiStyles = {
   border: "1px solid #1a1a1a",
@@ -8,9 +10,8 @@ const whoamiStyles = {
 
 function LoggedIn() {
   const [result, setResult] = React.useState("");
-
+  const navigate = useNavigate();
   const { whoamiActor, logout } = useAuth();
-
   const handleClick = async () => {
     const whoami = await whoamiActor.whoami();
     setResult(whoami);
@@ -39,6 +40,10 @@ function LoggedIn() {
       />
       <button id="logout" onClick={logout}>
         log out
+      </button>
+
+      <button id="form" onClick={() => navigate("/certificate-form")}>
+        Open Certificate Form ()
       </button>
     </div>
   );
