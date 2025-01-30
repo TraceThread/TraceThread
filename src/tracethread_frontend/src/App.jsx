@@ -1,13 +1,16 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
 import LoggedOut from "./LoggedOut";
+import LoggedIn from "./LoggedIn";
+import CertificateForm from "./CertificateForm";
 import { useAuth, AuthProvider } from "./use-auth-client";
 import "./assets/main.css";
-import LoggedIn from "./LoggedIn";
 
 function App() {
-  const { isAuthenticated, identity } = useAuth();
+  const { isAuthenticated } = useAuth();
+
   return (
-    <>
+    <Router>
       <header id="header">
         <section id="status" className="toast hidden">
           <span id="content"></span>
@@ -28,10 +31,20 @@ function App() {
           </button>
         </section>
       </header>
+
       <main id="pageContent">
-        {isAuthenticated ? <LoggedIn /> : <LoggedOut />}
+        <Routes>
+          {/* Default route - Redirects based on authentication */}
+          <Route path="/" element={isAuthenticated ? <LoggedIn /> : <LoggedOut />} />
+
+          {/* Route for certificate form */}
+          <Route path="/certificate-form" element={<CertificateForm />} />
+
+          {/* Redirect unknown routes to home */}
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </main>
-    </>
+    </Router>
   );
 }
 
